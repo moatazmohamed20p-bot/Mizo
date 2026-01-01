@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>لوحة التحكم | Mizo</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="assets/logo.svg">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.css">
+</head>
+<body class="dashboard-page">
+    <!-- شريط التنقل العلوي -->
+    <nav class="dashboard-navbar">
+        <div class="container">
+            <div class="nav-brand">
+                <div class="logo">
+                    <i class="fas fa-crown"></i>
+                    <span>Mizo Dashboard</span>
+                </div>
+            </div>
+            
+            <div class="nav-search">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="ابحث عن مستخدم، مشروع، تقرير...">
+                </div>
+            </div>
+            
+            <div class="nav-actions">
+                <div class="notifications">
+                    <button class="notification-btn">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-count">3</span>
+                    </button>
+                    <div class="notification-dropdown">
+                        <div class="notification-header">
+                            <h4>الإشعارات</h4>
+                            <a href="#" class="mark-read">تحديد الكل كمقروء</a>
+                        </div>
+                        <div class="notification-list">
+                            <div class="notification-item unread">
+                                <div class="notification-icon">
+                                    <i class="fas fa-user-plus"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p>مستخدم جديد مسجل: أحمد محمد</p>
+                                    <span class="notification-time">منذ 5 دقائق</span>
+                                </div>
+                            </div>
+                            <div class="notification-item unread">
+                                <div class="notification-icon">
+                                    <i class="fas fa-project-diagram"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p>تم إكمال مشروع "تطوير النظام"</p>
+                                    <span class="notification-time">منذ ساعة</span>
+                                </div>
+                            </div>
+                            <div class="notification-item">
+                                <div class="notification-icon">
+                                    <i class="fas fa-chart-line"></i>
+                                </div>
+                                <div class="notification-content">
+                                    <p>تقرير الأداء الشهري جاهز</p>
+                                    <span class="notification-time">منذ يوم</span>
+                                </div>
+                            </div>
+                        </div>
+                        <a href="#" class="notification-footer">عرض جميع الإشعارات</a>
+                    </div>
+                </div>
+                
+                <div class="user-profile">
+                    <button class="profile-btn">
+                        <div class="profile-avatar">
+                            <i class="fas fa-user-circle"></i>
+                        </div>
+                        <span class="profile-name" id="userName">جار التحميل...</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="profile-dropdown">
+                        <a href="profile.html" class="dropdown-item">
+                            <i class="fas fa-user"></i>
+                            الملف الشخصي
+                        </a>
+                        <a href="settings.html" class="dropdown-item">
+                            <i class="fas fa-cog"></i>
+                            الإعدادات
+                        </a>
+                        <div class="dropdown-divider"></div>
+                        <a href="#" onclick="logout()" class="dropdown-item">
+                            <i class="fas fa-sign-out-alt"></i>
+                            تسجيل الخروج
+                        </a>
+                    </div>
+                </div>
+            </div>
+            
+            <button class="sidebar-toggle">
+                <i class="fas fa-bars"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- الشريط الجانبي -->
+    <aside class="dashboard-sidebar">
+        <div class="sidebar-content">
+            <div class="sidebar-header">
+                <div class="user-info">
+                    <div class="user-avatar">
+                        <i class="fas fa-user-circle"></i>
+                    </div>
+                    <div class="user-details">
+                        <h4 id="sidebarUserName">جار التحميل...</h4>
+                        <span class="user-role" id="userRole">مستخدم</span>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="sidebar-menu">
+                <a href="dashboard.html" class="menu-item active">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>لوحة التحكم</span>
+                </a>
+                
+                <div class="menu-section">
+                    <h5>إدارة المحتوى</h5>
+                    <a href="projects.html" class="menu-item">
+                        <i class="fas fa-project-diagram"></i>
+                        <span>المشاريع</span>
+                    </a>
+                    <a href="tasks.html" class="menu-item">
+                        <i class="fas fa-tasks"></i>
+                        <span>المهام</span>
+                    </a>
+                    <a href="files.html" class="menu-item">
+                        <i class="fas fa-folder"></i>
+                        <span>الملفات</span>
+                    </a>
+                </div>
+                
+                <div class="menu-section">
+                    <h5>إدارة المستخدمين</h5>
+                    <a href="users.html" class="menu-item">
+                        <i class="fas fa-users"></i>
+                        <span>المستخدمين</span>
+                    </a>
+                    <a href="mizo.html" class="menu-item">
+                        <i class="fas fa-user-shield"></i>
+                        <span>لوحة المدراء</span>
+                        <span class="menu-badge">Pro</span>
+                    </a>
+                    <a href="permissions.html" class="menu-item">
+                        <i class="fas fa-key"></i>
+                        <span>الصلاحيات</span>
+                    </a>
+                </div>
+                
+                <div class="menu-section">
+                    <h5>الإعدادات</h5>
+                    <a href="profile.html" class="menu-item">
+                        <i class="fas fa-user-cog"></i>
+                        <span>الملف الشخصي</span>
+                    </a>
+                    <a href="settings.html" class="menu-item">
+                        <i class="fas fa-cogs"></i>
+                        <span>الإعدادات العامة</span>
+                    </a>
+                    <a href="security.html" class="menu-item">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>الأمان</span>
+                    </a>
+                </div>
+                
+                <div class="menu-section">
+                    <h5>الدعم</h5>
+                    <a href="help.html" class="menu-item">
+                        <i class="fas fa-question-circle"></i>
+                        <span>المساعدة</span>
+                    </a>
+                    <a href="contact.html" class="menu-item">
+                        <i class="fas fa-headset"></i>
+                        <span>الدعم الفني</span>
+                    </a>
+                </div>
+            </nav>
+            
+            <div class="sidebar-footer">
+                <div class="system-status">
+                    <div class="status-indicator online"></div>
+                    <span>النظام يعمل</span>
+                </div>
+                <div class="version">الإصدار 1.0.0</div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- المحتوى الرئيسي -->
+    <main class="dashboard-content">
+        <div class="container-fluid">
+            <!-- عناوين الصفحة -->
+            <div class="page-header">
+                <div class="page-title">
+                    <h1>لوحة التحكم</h1>
+                    <p>مرحبًا بعودتك! إليك نظرة عامة على نشاطاتك</p>
+                </div>
+                <div class="page-actions">
+                    <button class="btn btn-primary">
+                        <i class="fas fa-plus"></i>
+                        مشروع جديد
+                    </button>
+                    <button class="btn btn-outline">
+                        <i class="fas fa-download"></i>
+                        تصدير التقرير
+                    </button>
+                </div>
+            </div>
+
+            <!-- الإحصائيات السريعة -->
+            <div class="stats-cards">
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #4361ee, #3a0ca3);">
+                        <i class="fas fa-project-diagram"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalProjects">12</h3>
+                        <p>المشاريع النشطة</p>
+                    </div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>12%</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #f72585, #b5179e);">
+                        <i class="fas fa-users"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="totalUsers">48</h3>
+                        <p>المستخدمين النشطين</p>
+                    </div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>8%</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #4cc9f0, #3a86ff);">
+                        <i class="fas fa-tasks"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3 id="completedTasks">156</h3>
+                        <p>مهام منجزة</p>
+                    </div>
+                    <div class="stat-change negative">
+                        <i class="fas fa-arrow-down"></i>
+                        <span>3%</span>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon" style="background: linear-gradient(135deg, #f8961e, #f3722c);">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <div class="stat-info">
+                        <h3>94.7%</h3>
+                        <p>معدل الإنجاز</p>
+                    </div>
+                    <div class="stat-change positive">
+                        <i class="fas fa-arrow-up"></i>
+                        <span>5.2%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- الرسوم البيانية -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>نشاط المشاريع</h3>
+                        <select class="chart-period">
+                            <option>هذا الشهر</option>
+                            <option>الشهر الماضي</option>
+                            <option>هذا العام</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="projectsChart"></canvas>
+                    </div>
+                </div>
+                
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>توزيع المستخدمين</h3>
+                        <select class="chart-period">
+                            <option>الكل</option>
+                            <option>المدراء</option>
+                            <option>المستخدمون</option>
+                        </select>
+                    </div>
+                    <div class="chart-container">
+                        <canvas id="usersChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- المشاريع الحديثة -->
+            <div class="recent-section">
+                <div class="section-header">
+                    <h3>المشاريع الحديثة</h3>
+                    <a href="projects.html" class="view-all">عرض الكل <i class="fas fa-arrow-left"></i></a>
+                </div>
+                <div class="projects-grid" id="recentProjects">
+                    <!-- سيتم ملؤها بالجافاسكريبت -->
+                </div>
+            </div>
+
+            <!-- النشاط الأخير -->
+            <div class="activity-section">
+                <div class="section-header">
+                    <h3>النشاط الأخير</h3>
+                    <a href="activity.html" class="view-all">عرض الكل <i class="fas fa-arrow-left"></i></a>
+                </div>
+                <div class="activity-timeline" id="recentActivity">
+                    <!-- سيتم ملؤها بالجافاسكريبت -->
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- الشريط السفلي -->
+    <footer class="dashboard-footer">
+        <div class="container-fluid">
+            <div class="footer-content">
+                <p>© 2024 Mizo Dashboard. جميع الحقوق محفوظة.</p>
+                <div class="footer-links">
+                    <a href="privacy.html">الخصوصية</a>
+                    <a href="terms.html">الشروط</a>
+                    <a href="help.html">المساعدة</a>
+                    <a href="contact.html">اتصل بنا</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- الإشعارات -->
+    <div class="alerts-container"></div>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/dashboard.js"></script>
+    <script src="js/notifications.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@3.9.1/dist/chart.min.js"></script>
+    <script>
+        // تهيئة لوحة التحكم
+        document.addEventListener('DOMContentLoaded', async () => {
+            // التحقق من المصادقة
+            const user = await auth.requireAuth();
+            if (!user) return;
+            
+            // تحديث معلومات المستخدم
+            document.getElementById('userName').textContent = user.email || 'المستخدم';
+            document.getElementById('sidebarUserName').textContent = user.email || 'المستخدم';
+            
+            // تحميل الإحصائيات
+            await loadDashboardStats();
+            
+            // تهيئة الرسوم البيانية
+            initCharts();
+            
+            // تحميل المشاريع الحديثة
+            await loadRecentProjects();
+            
+            // تحميل النشاط الأخير
+            await loadRecentActivity();
+        });
+        
+        // تسجيل الخروج
+        async function logout() {
+            if (confirm('هل أنت متأكد من تسجيل الخروج؟')) {
+                await auth.logout();
+            }
+        }
+        
+        // إدارة القائمة الجانبية للجوال
+        document.querySelector('.sidebar-toggle').addEventListener('click', () => {
+            document.querySelector('.dashboard-sidebar').classList.toggle('active');
+        });
+        
+        // إدارة القوائم المنسدلة
+        document.querySelectorAll('.notification-btn, .profile-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const dropdown = this.nextElementSibling;
+                dropdown.classList.toggle('show');
+                
+                // إغلاق باقي القوائم المنسدلة
+                document.querySelectorAll('.notification-dropdown.show, .profile-dropdown.show').forEach(d => {
+                    if (d !== dropdown) d.classList.remove('show');
+                });
+            });
+        });
+        
+        // إغلاق القوائم المنسدلة عند النقر خارجها
+        document.addEventListener('click', () => {
+            document.querySelectorAll('.notification-dropdown.show, .profile-dropdown.show').forEach(d => {
+                d.classList.remove('show');
+            });
+        });
+    </script>
+</body>
+</html>

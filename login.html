@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تسجيل الدخول | Mizo</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/auth.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/x-icon" href="assets/logo.svg">
+</head>
+<body class="auth-page">
+    <div class="auth-container">
+        <!-- الجزء الجانبي للتصميم -->
+        <div class="auth-side">
+            <div class="auth-side-content">
+                <div class="auth-logo">
+                    <i class="fas fa-crown"></i>
+                    <h1>Mizo</h1>
+                </div>
+                <div class="auth-quote">
+                    <h2>مرحبًا بعودتك!</h2>
+                    <p>نظام إدارة المحتوى الاحترافي الذي يسهل عملك اليومي</p>
+                </div>
+                <div class="auth-features">
+                    <div class="feature">
+                        <i class="fas fa-shield-alt"></i>
+                        <span>أمان متقدم</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-bolt"></i>
+                        <span>أداء سريع</span>
+                    </div>
+                    <div class="feature">
+                        <i class="fas fa-headset"></i>
+                        <span>دعم فني 24/7</span>
+                    </div>
+                </div>
+            </div>
+            <div class="auth-side-image"></div>
+        </div>
+
+        <!-- نموذج تسجيل الدخول -->
+        <div class="auth-main">
+            <div class="auth-card">
+                <div class="auth-header">
+                    <h2>تسجيل الدخول</h2>
+                    <p>أدخل بياناتك للوصول إلى حسابك</p>
+                </div>
+
+                <form id="loginForm" class="auth-form">
+                    <div class="form-group">
+                        <label for="email">
+                            <i class="fas fa-envelope"></i>
+                            البريد الإلكتروني
+                        </label>
+                        <input type="email" id="email" placeholder="ادخل بريدك الإلكتروني" required>
+                        <div class="form-hint">أدخل البريد الإلكتروني المسجل لدينا</div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="password">
+                            <i class="fas fa-lock"></i>
+                            كلمة المرور
+                        </label>
+                        <div class="password-input">
+                            <input type="password" id="password" placeholder="ادخل كلمة المرور" required>
+                            <button type="button" class="password-toggle">
+                                <i class="fas fa-eye"></i>
+                            </button>
+                        </div>
+                        <div class="form-hint">يجب أن تحتوي على 8 أحرف على الأقل</div>
+                    </div>
+
+                    <div class="form-options">
+                        <label class="checkbox">
+                            <input type="checkbox" id="remember">
+                            <span class="checkmark"></span>
+                            تذكرني
+                        </label>
+                        <a href="forgot-password.html" class="forgot-password">
+                            نسيت كلمة المرور؟
+                        </a>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary btn-block btn-lg">
+                        <i class="fas fa-sign-in-alt"></i>
+                        تسجيل الدخول
+                    </button>
+
+                    <div class="auth-divider">
+                        <span>أو</span>
+                    </div>
+
+                    <button type="button" class="btn btn-outline btn-block btn-social">
+                        <i class="fab fa-google"></i>
+                        تسجيل الدخول بواسطة Google
+                    </button>
+
+                    <div class="auth-footer">
+                        <p>ليس لديك حساب؟ <a href="register.html">إنشاء حساب جديد</a></p>
+                        <p><a href="index.html"><i class="fas fa-home"></i> العودة إلى الرئيسية</a></p>
+                    </div>
+                </form>
+
+                <!-- رسالة النتيجة -->
+                <div id="authMessage" class="auth-message hidden">
+                    <div class="message-content">
+                        <i class="fas fa-spinner fa-spin"></i>
+                        <span>جاري تسجيل الدخول...</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- التنبيهات -->
+    <div class="alerts-container"></div>
+
+    <script src="js/config.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/notifications.js"></script>
+    <script>
+        // التحقق من حالة تسجيل الدخول
+        async function checkAuthStatus() {
+            const { data: { user } } = await supabaseClient.auth.getUser();
+            if (user) {
+                window.location.href = "dashboard.html";
+            }
+        }
+
+        // معالجة نموذج تسجيل الدخول
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            const remember = document.getElementById('remember').checked;
+            
+            // عرض حالة التحميل
+            const message = document.getElementById('authMessage');
+            const messageContent = message.querySelector('span');
+            message.classList.remove('hidden');
+            messageContent.innerHTML = 'جاري تسجيل الدخول...';
+            
+            try {
+                const { data, error } = await supabaseClient.auth.signInWithPassword({
+                    email,
+                    password
+                });
+                
+                if (error) throw error;
+                
+                // تحديث جلسة المستخدم
+                if (remember) {
+                    await supabaseClient.auth.refreshSession();
+                }
+                
+                messageContent.innerHTML = 'تم تسجيل الدخول بنجاح! جاري التوجيه...';
+                message.classList.add('success');
+                
+                // إظهار تنبيه النجاح
+                showNotification('تم تسجيل الدخول بنجاح', 'success');
+                
+                // الانتقال إلى لوحة التحكم بعد تأخير
+                setTimeout(() => {
+                    window.location.href = "dashboard.html";
+                }, 1500);
+                
+            } catch (error) {
+                messageContent.innerHTML = `خطأ: ${error.message}`;
+                message.classList.add('error');
+                
+                // إظهار تنبيه الخطأ
+                showNotification(`فشل تسجيل الدخول: ${error.message}`, 'error');
+                
+                // إخفاء الرسالة بعد 5 ثوان
+                setTimeout(() => {
+                    message.classList.remove('error', 'success', 'hidden');
+                }, 5000);
+            }
+        });
+
+        // تبديل إظهار كلمة المرور
+        document.querySelector('.password-toggle').addEventListener('click', function() {
+            const passwordInput = document.getElementById('password');
+            const icon = this.querySelector('i');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                passwordInput.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        });
+
+        // تحقق من حالة المصادقة عند التحميل
+        document.addEventListener('DOMContentLoaded', checkAuthStatus);
+    </script>
+</body>
+</html>
